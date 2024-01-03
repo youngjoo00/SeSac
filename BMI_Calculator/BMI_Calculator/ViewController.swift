@@ -149,9 +149,8 @@ class ViewController: UIViewController {
         tf.layer.cornerRadius = 20
         tf.layer.borderWidth = 2
         tf.layer.borderColor = UIColor.black.cgColor
-        tf.keyboardType = .default
+        tf.keyboardType = .decimalPad
         tf.placeholder = placeholder
-        tf.isSecureTextEntry = false
     }
     
     func designResultBtn(_ resultBtn:UIButton, enabled: Bool) {
