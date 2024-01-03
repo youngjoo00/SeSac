@@ -67,7 +67,8 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
-                                    <action selector="changedTextField:" destination="BYZ-38-t0r" eventType="editingDidEnd" id="rpe-ap-Nfs"/>
+                                    <action selector="changedTextField:" destination="BYZ-38-t0r" eventType="editingChanged" id="AkD-0m-0e1"/>
+                                    <action selector="didEndTextField:" destination="BYZ-38-t0r" eventType="editingDidEnd" id="7As-Ye-6vU"/>
                                     <action selector="returnKeyboardClicked:" destination="BYZ-38-t0r" eventType="editingDidEndOnExit" id="yOR-Vt-rPU"/>
                                 </connections>
                             </textField>
@@ -76,7 +77,9 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
-                                    <action selector="changedTextField:" destination="BYZ-38-t0r" eventType="editingDidEnd" id="5sN-Xb-XAZ"/>
+                                    <action selector="changedTextField:" destination="BYZ-38-t0r" eventType="editingChanged" id="SSf-vF-qeo"/>
+                                    <action selector="didEndTextField:" destination="BYZ-38-t0r" eventType="editingDidEnd" id="1u7-IA-FQf"/>
+                                    <action selector="returnKeyboardClicked:" destination="BYZ-38-t0r" eventType="editingDidEndOnExit" id="m0p-ih-pRR"/>
                                 </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qfm-qV-eXo">

@@ -5,6 +5,10 @@
 //  Created by youngjoo on 1/3/24.
 //
 
+
+//1. 사용자가 tf에 입력
+//2. tf 의 값이 변경되거나 변경이 끝나면, changedTextField 함수 실행되어 텍스트필드에 대한 유효성 검사 진행
+//3. resultBtn 을 클릭하면 bmi 계산 및 Alert 띄우기
 import UIKit
 
 class ViewController: UIViewController {
@@ -53,7 +57,6 @@ class ViewController: UIViewController {
         hideBtn.tintColor = .lightGray
         
         resultBtn.setTitle("결과 확인", for: .normal)
-        resultBtn.backgroundColor = .purple
         resultBtn.layer.cornerRadius = 20
         resultBtn.titleLabel?.font = UIFont.systemFont(ofSize: 25)
         vaildationTextField()
@@ -64,24 +67,15 @@ class ViewController: UIViewController {
         
         let bmi = bmiCalculate()
         
-//        if bmi >= 10 {
-//            
-//        } else if bmi >= 23 {
-//            
-//        } else if bmi >= 25 {
-//            
-//        }
-        
-        let alert = UIAlertController(title: "당신의 BMI 지수는 \(bmi) 입니다.", message: "돼지네요!", preferredStyle: .alert)
-        
-        let cancelButton = UIAlertAction(title: "cancle", style: .cancel)
-        let confirmButton = UIAlertAction(title: "ok", style: .default)
-        
-        alert.addAction(cancelButton)
-        alert.addAction(confirmButton)
-        
-        present(alert, animated: true)
-
+        if bmi < 18.5 {
+            showAlert(bmi, message: "저체중")
+        } else if bmi < 23 {
+            showAlert(bmi, message: "정상")
+        } else if bmi < 25 {
+            showAlert(bmi, message: "과체중")
+        } else {
+            showAlert(bmi, message: "비만")
+        }
     }
     
     @IBAction func randomBmiBtnClicked(_ sender: UIButton) {
@@ -93,7 +87,12 @@ class ViewController: UIViewController {
         vaildationTextField()
     }
     
+    // 텍스트 필드가 수정되거나, 수정이 끝났을때 검사
     @IBAction func changedTextField(_ sender: UITextField) {
+        vaildationTextField()
+    }
+    
+    @IBAction func didEndTextField(_ sender: UITextField) {
         vaildationTextField()
     }
     
@@ -116,21 +115,33 @@ class ViewController: UIViewController {
         view.endEditing(true)
     }
     
+    func showAlert(_ bmi: Double, message: String) {
+        let bmi = String(format: "%.2f", bmi)
+        let alert = UIAlertController(title: "당신의 BMI 지수는 \(bmi) 입니다.", message: message, preferredStyle: .alert)
+        
+        let cancelButton = UIAlertAction(title: "cancle", style: .cancel)
+        let confirmButton = UIAlertAction(title: "ok", style: .default)
+        
+        alert.addAction(cancelButton)
+        alert.addAction(confirmButton)
+        
+        present(alert, animated: true)
+    }
+    
     func vaildationTextField() {
-        if let weight = Double(inputWeightTextField.text!), let height = Double(inputHeightTextField.text!) {
-            resultBtn.isEnabled = true
-            resultBtn.setTitleColor(.white, for: .normal)
+        
+        if let weight = Double(inputWeightTextField.text!), let height = Double(inputHeightTextField.text!), (weight > 0 && weight < 500), (height > 0 && height < 300) {
+            designResultBtn(resultBtn, enabled: true)
             self.weight = weight
             self.height = height
         } else {
-            resultBtn.isEnabled = false
-            resultBtn.setTitleColor(.lightGray, for: .normal)
+            designResultBtn(resultBtn, enabled: false)
         }
     }
     
-    func bmiCalculate() -> String {
+    func bmiCalculate() -> Double {
         let bmi = self.weight / (self.height * self.height) * 10000
-        return String(format: "%.2f", bmi)
+        return bmi
     }
     
     func setInputTextField(_ tf: UITextField, placeholder: String) {
@@ -141,6 +152,18 @@ class ViewController: UIViewController {
         tf.keyboardType = .default
         tf.placeholder = placeholder
         tf.isSecureTextEntry = false
+    }
+    
+    func designResultBtn(_ resultBtn:UIButton, enabled: Bool) {
+        resultBtn.isEnabled = enabled
+        
+        if resultBtn.isEnabled {
+            resultBtn.setTitleColor(.white, for: .normal)
+            resultBtn.backgroundColor = .purple
+        } else {
+            resultBtn.backgroundColor = .lightGray
+            resultBtn.setTitleColor(.white, for: .normal)
+        }
     }
 }
 
