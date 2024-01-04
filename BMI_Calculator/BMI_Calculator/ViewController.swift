@@ -5,12 +5,9 @@
 //  Created by youngjoo on 1/3/24.
 //
 
-
-//1. 사용자가 tf에 입력
-//2. tf 의 값이 변경되거나 변경이 끝나면, changedTextField 함수 실행되어 텍스트필드에 대한 유효성 검사 진행
-//3. resultBtn 을 클릭하면 bmi 계산 및 Alert 띄우기
 import UIKit
 
+// 껐다 키면 모든 기능 동작 완료
 class ViewController: UIViewController {
 
     @IBOutlet var titleLabel: UILabel!
@@ -29,22 +26,26 @@ class ViewController: UIViewController {
     
     @IBOutlet var hideBtn: UIButton!
     
+    @IBOutlet var resetInfoBtn: UIButton!
     var height: Double = 0
     var weight: Double = 0
+    var isLogin: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         titleLabel.text = "BMI Calculator"
         titleLabel.font = UIFont.boldSystemFont(ofSize: 25)
-        subtitleLabel.text = "당신의 BMI 지수를\n알려드릴게요."
-        subtitleLabel.numberOfLines = 0
+        
+        setSubtitleLabel(subtitleLabel)
         
         mainImageView.image = UIImage(named: "image")
         mainImageView.contentMode = .scaleToFill
         
         askHeightLabel.text = "키가 어떻게 되시나요?"
         askWeightLabel.text = "몸무게는 어떻게 되시나요?"
+        
+        checkedLogin()
         
         setInputTextField(inputHeightTextField, placeholder: "키를 입력해주세요.")
         setInputTextField(inputWeightTextField, placeholder: "몸무게를 입력해주세요.")
@@ -59,6 +60,8 @@ class ViewController: UIViewController {
         resultBtn.setTitle("결과 확인", for: .normal)
         resultBtn.layer.cornerRadius = 20
         resultBtn.titleLabel?.font = UIFont.systemFont(ofSize: 25)
+        
+        setResetInfoBtn(resetInfoBtn)
         vaildationTextField()
     }
 
@@ -75,6 +78,11 @@ class ViewController: UIViewController {
             showAlert(bmi, message: "과체중")
         } else {
             showAlert(bmi, message: "비만")
+        }
+        
+        if isLogin {
+            UserDefaults.standard.set(self.height, forKey: "savedHeight")
+            UserDefaults.standard.set(self.weight, forKey: "savedWeight")
         }
     }
     
@@ -115,14 +123,21 @@ class ViewController: UIViewController {
         view.endEditing(true)
     }
     
+    @IBAction func resetInfoBtnClicked(_ sender: UIButton) {
+        UserDefaults.standard.removeObject(forKey: "savedWeight")
+        UserDefaults.standard.removeObject(forKey: "savedHeight")
+        
+        inputHeightTextField.text = ""
+        inputWeightTextField.text = ""
+        vaildationTextField()
+    }
+    
     func showAlert(_ bmi: Double, message: String) {
         let bmi = String(format: "%.2f", bmi)
         let alert = UIAlertController(title: "당신의 BMI 지수는 \(bmi) 입니다.", message: message, preferredStyle: .alert)
         
-        let cancelButton = UIAlertAction(title: "cancle", style: .cancel)
         let confirmButton = UIAlertAction(title: "ok", style: .default)
         
-        alert.addAction(cancelButton)
         alert.addAction(confirmButton)
         
         present(alert, animated: true)
@@ -132,8 +147,8 @@ class ViewController: UIViewController {
         
         if let weight = Double(inputWeightTextField.text!), let height = Double(inputHeightTextField.text!), (weight > 0 && weight < 500), (height > 0 && height < 300) {
             designResultBtn(resultBtn, enabled: true)
-            self.weight = weight
-            self.height = height
+            self.weight = Double(String(format: "%.1f", weight))!
+            self.height = Double(String(format: "%.1f", height))!
         } else {
             designResultBtn(resultBtn, enabled: false)
         }
@@ -144,13 +159,32 @@ class ViewController: UIViewController {
         return bmi
     }
     
+    // View 를 이런식으로 2번씩 조작해도 되는건가..?
     func setInputTextField(_ tf: UITextField, placeholder: String) {
+        if isLogin {
+            let info = checkedInfo()
+            if info.isInfo {
+                inputHeightTextField.text = info.savedHeight
+                inputWeightTextField.text = info.savedWeight
+            }
+        }
+        
+        tf.placeholder = placeholder
         tf.layer.masksToBounds = true
         tf.layer.cornerRadius = 20
         tf.layer.borderWidth = 2
         tf.layer.borderColor = UIColor.black.cgColor
         tf.keyboardType = .decimalPad
-        tf.placeholder = placeholder
+    }
+    
+    // userDefaluts 로 저장된 몸무게와 키가 있는지 확인하는 코드를 중복 없이 한 번만 확인해서 가져오기 위해
+    // 리턴 값을 여러개로 줄 수 있는 방법 없는지 찾아본 결과 튜플을 이용한 리턴이 있었다,,
+    func checkedInfo() -> (isInfo: Bool, savedWeight: String, savedHeight: String) {
+        guard let savedWeight = UserDefaults.standard.string(forKey: "savedWeight"),
+           let savedHeight = UserDefaults.standard.string(forKey: "savedHeight") else {
+            return (false, "", "")
+        }
+        return (true, savedWeight, savedHeight)
     }
     
     func designResultBtn(_ resultBtn:UIButton, enabled: Bool) {
@@ -163,6 +197,35 @@ class ViewController: UIViewController {
             resultBtn.backgroundColor = .lightGray
             resultBtn.setTitleColor(.white, for: .normal)
         }
+    }
+    
+    func setSubtitleLabel(_ subtitle: UILabel) {
+        if let nickname = UserDefaults.standard.string(forKey: "nickname") {
+            subtitleLabel.text = "\(nickname)님의 BMI 지수를\n알려드릴게요."
+        } else {
+            subtitleLabel.text = "손님의 BMI 지수를\n알려드릴게요."
+        }
+        
+        subtitleLabel.numberOfLines = 0
+    }
+    
+    func checkedLogin() {
+        if let _ = UserDefaults.standard.string(forKey: "nickname") {
+            isLogin = true
+        } else {
+            isLogin = false
+        }
+    }
+    
+    func setResetInfoBtn(_ btn: UIButton) {
+        if isLogin {
+            btn.isHidden = false
+        } else {
+            btn.isHidden = true
+        }
+        
+        btn.setTitle("내 정보 초기화", for: .normal)
+        btn.setTitleColor(.purple, for: .normal)
     }
 }
 

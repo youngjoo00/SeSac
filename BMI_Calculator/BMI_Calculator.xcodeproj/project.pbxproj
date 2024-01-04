@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8E2BB0992B46F47A00B24D60 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E2BB0982B46F47A00B24D60 /* LoginViewController.swift */; };
 		8E7976992B455FEB002950F7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E7976982B455FEB002950F7 /* AppDelegate.swift */; };
 		8E79769B2B455FEB002950F7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E79769A2B455FEB002950F7 /* SceneDelegate.swift */; };
 		8E79769D2B455FEB002950F7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E79769C2B455FEB002950F7 /* ViewController.swift */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8E2BB0982B46F47A00B24D60 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		8E7976952B455FEB002950F7 /* BMI_Calculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BMI_Calculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E7976982B455FEB002950F7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8E79769A2B455FEB002950F7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -59,6 +61,7 @@
 				8E7976982B455FEB002950F7 /* AppDelegate.swift */,
 				8E79769A2B455FEB002950F7 /* SceneDelegate.swift */,
 				8E79769C2B455FEB002950F7 /* ViewController.swift */,
+				8E2BB0982B46F47A00B24D60 /* LoginViewController.swift */,
 				8E79769E2B455FEB002950F7 /* Main.storyboard */,
 				8E7976A12B455FEC002950F7 /* Assets.xcassets */,
 				8E7976A32B455FEC002950F7 /* LaunchScreen.storyboard */,
@@ -138,6 +141,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8E2BB0992B46F47A00B24D60 /* LoginViewController.swift in Sources */,
 				8E79769D2B455FEB002950F7 /* ViewController.swift in Sources */,
 				8E7976992B455FEB002950F7 /* AppDelegate.swift in Sources */,
 				8E79769B2B455FEB002950F7 /* SceneDelegate.swift in Sources */,
