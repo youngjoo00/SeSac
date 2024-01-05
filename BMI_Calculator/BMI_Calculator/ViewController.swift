@@ -7,7 +7,8 @@
 
 import UIKit
 
-// 껐다 키면 모든 기능 동작 완료
+// 함수를 추가할수록 뭔가 로직이 점점 이상해진다.
+// 로그인 or 로그아웃 시 바로 화면에 적용되도록 하고 싶지만 시간관계상 다음에,,
 class ViewController: UIViewController {
 
     @IBOutlet var titleLabel: UILabel!
@@ -27,6 +28,7 @@ class ViewController: UIViewController {
     @IBOutlet var hideBtn: UIButton!
     
     @IBOutlet var resetInfoBtn: UIButton!
+    
     var height: Double = 0
     var weight: Double = 0
     var isLogin: Bool = false
@@ -83,6 +85,7 @@ class ViewController: UIViewController {
         if isLogin {
             UserDefaults.standard.set(self.height, forKey: "savedHeight")
             UserDefaults.standard.set(self.weight, forKey: "savedWeight")
+            print("저장완료")
         }
     }
     
@@ -159,14 +162,18 @@ class ViewController: UIViewController {
         return bmi
     }
     
-    // View 를 이런식으로 2번씩 조작해도 되는건가..?
     func setInputTextField(_ tf: UITextField, placeholder: String) {
         if isLogin {
             let info = checkedInfo()
+            print("정보 가져옴")
             if info.isInfo {
                 inputHeightTextField.text = info.savedHeight
+                print(info.savedHeight)
                 inputWeightTextField.text = info.savedWeight
             }
+        } else {
+            inputHeightTextField.text = ""
+            inputWeightTextField.text = ""
         }
         
         tf.placeholder = placeholder

@@ -7,7 +7,6 @@
 
 import UIKit
 
-// 껐다 키면 모든 기능 동작 완료
 class LoginViewController: UIViewController {
 
     @IBOutlet var titleLabel: UILabel!
@@ -26,7 +25,6 @@ class LoginViewController: UIViewController {
         setNicknameTextField(nicknameTextField)
         setBtn(loginBtn, title: "Login", backgroundColor: .purple)
         setBtn(logoutBtn, title: "Logout", backgroundColor: .lightGray)
-        
         showBtn()
     }
     
@@ -37,6 +35,10 @@ class LoginViewController: UIViewController {
         } else {
             descriptionAlert(title: "로그인에 실패했습니다", message: "닉네임을 입력해주세요.")
         }
+        checkedLogin()
+        setTitleLabel(titleLabel)
+        setNicknameTextField(nicknameTextField)
+        showBtn()
     }
     
     @IBAction func logoutBtnClicked(_ sender: UIButton) {
@@ -44,6 +46,10 @@ class LoginViewController: UIViewController {
         UserDefaults.standard.removeObject(forKey: "savedWeight")
         UserDefaults.standard.removeObject(forKey: "savedHeight")
         descriptionAlert(title: "로그아웃에 성공했습니다!", message: "")
+        checkedLogin()
+        setTitleLabel(titleLabel)
+        setNicknameTextField(nicknameTextField)
+        showBtn()
         
     }
     
@@ -61,6 +67,8 @@ class LoginViewController: UIViewController {
     func setNicknameTextField(_ nicknameTF: UITextField) {
         if isLogin {
             nicknameTF.text = nickname
+        } else {
+            nicknameTF.text = ""
         }
         nicknameTF.placeholder = "닉네임을 입력하세요."
     }
@@ -94,6 +102,7 @@ class LoginViewController: UIViewController {
     func checkedLogin() {
         guard let nickname = UserDefaults.standard.string(forKey: "nickname") else {
             isLogin = false
+            self.nickname = nil
             return
         }
         
